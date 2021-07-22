@@ -1,0 +1,13 @@
+# Read the Docs Configuration File
+#
+# Reference:
+#   https://docs.readthedocs.io/en/stable/config-file/v2.html
+#
+version: 2
+formats: all
+sphinx:
+  builder: html
+  configuration: docs/conf.py
+  fail_on_warning: false
+conda:
+  environment: environment.yml

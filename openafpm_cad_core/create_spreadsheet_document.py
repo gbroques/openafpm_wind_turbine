@@ -1,11 +1,15 @@
 import FreeCAD as App
+from FreeCAD import Document
+
+from .parameter_groups import (FurlingParameters, MagnafpmParameters,
+                               UserParameters)
 
 __all__ = ['create_spreadsheet_document']
 
 
-def create_spreadsheet_document(magnafpm_parameters: dict,
-                                furling_parameters: dict,
-                                user_parameters: dict):
+def create_spreadsheet_document(magnafpm_parameters: MagnafpmParameters,
+                                furling_parameters: FurlingParameters,
+                                user_parameters: UserParameters) -> Document:
     static_parameters = _get_static_parameters()
     calculated_parameters = _get_calculated_parameters()
     parameters_by_key = {
@@ -28,14 +32,14 @@ def create_spreadsheet_document(magnafpm_parameters: dict,
     return document
 
 
-def _add_spreadsheet(document, name, parameters_by_key):
+def _add_spreadsheet(document: Document, name: str, parameters_by_key: dict) -> None:
     sheet = document.addObject(
         'Spreadsheet::Sheet', name)
     cells = _build_cells(parameters_by_key)
     _populate_spreadsheet(sheet, cells)
 
 
-def _build_cells(parameters_by_key):
+def _build_cells(parameters_by_key) -> list:
     cells = []
     for key, parameters in parameters_by_key.items():
         cells.append([key, ''])
@@ -43,11 +47,11 @@ def _build_cells(parameters_by_key):
     return cells
 
 
-def _dict_to_cells(dictionary):
+def _dict_to_cells(dictionary: dict) -> list:
     return [[key, value] for key, value in dictionary.items()]
 
 
-def _populate_spreadsheet(spreadsheet, cells):
+def _populate_spreadsheet(spreadsheet, cells: list) -> None:
     for i, (key, value) in enumerate(cells):
         number = str(i + 1)
         key_cell = 'A' + number
@@ -60,14 +64,14 @@ def _populate_spreadsheet(spreadsheet, cells):
             spreadsheet.setStyle(key_cell, 'underline')
 
 
-def _get_static_parameters():
+def _get_static_parameters() -> dict:
     return {
         'YawBearingTailHingeJunctionHeight': '92.5',
         'YawBearingTailHingeJunctionChamfer': '15',
     }
 
 
-def _get_calculated_parameters():
+def _get_calculated_parameters() -> dict:
     return {
         'StatorMountingStudsLength': '=RotorDiskRadius < 275 ? 150 : 200',
         'ResineStatorOuterRadius': '=RotorDiskRadius < 275 ? (RotorDiskRadius + CoilLegWidth + 20) : (RotorDiskRadius + CoilLegWidth + 20) / cos(30)',
@@ -83,7 +87,7 @@ def _get_calculated_parameters():
     }
 
 
-def _get_t_shape_parameters_by_key():
+def _get_t_shape_parameters_by_key() -> dict:
     return {
         'Inputs': {
             'RotorDiskRadius': '=Spreadsheet.RotorDiskRadius',
@@ -120,7 +124,7 @@ def _get_t_shape_parameters_by_key():
     }
 
 
-def _get_h_shape_parameters_by_key():
+def _get_h_shape_parameters_by_key() -> dict:
     return {
         'Inputs': {
             'RotorDiskRadius': '=Spreadsheet.RotorDiskRadius',
@@ -146,7 +150,7 @@ def _get_h_shape_parameters_by_key():
     }
 
 
-def _get_tail_parameters_by_key():
+def _get_tail_parameters_by_key() -> dict:
     return {
         'Inputs': {
             'RotorDiskRadius': '=Spreadsheet.RotorDiskRadius',
@@ -169,7 +173,7 @@ def _get_tail_parameters_by_key():
             'DistanceBetweenHoles': '=BracketLength / 2',
             'VaneBracketAngle': '45'
         },
-        'Tail Hinge Pipe X Z' : {
+        'Tail Hinge Pipe X Z': {
             'XRotationOffset': '=HingeInnerBodyOuterRadius - cos(VerticalPlaneAngle) * HingeInnerBodyOuterRadius',
             'TrigOffset': '=tan(VerticalPlaneAngle) * (YawBearingTailHingeJunctionHeight - FlatMetalThickness) + XRotationOffset',
             'TailHingePipeX': '=HingeInnerBodyOuterRadius + YawPipeRadius - YawBearingTailHingeJunctionChamfer + YawBearingTailHingeJunctionInnerWidth - TrigOffset',
@@ -260,7 +264,7 @@ def _get_tail_parameters_by_key():
     }
 
 
-def _get_star_shape_parameters_by_key():
+def _get_star_shape_parameters_by_key() -> dict:
     return {
         'Inputs': {
             'ResineStatorOuterRadius': '=Spreadsheet.ResineStatorOuterRadius',
@@ -283,7 +287,7 @@ def _get_star_shape_parameters_by_key():
     }
 
 
-def _get_hub_parameters_by_key():
+def _get_hub_parameters_by_key() -> dict:
     return {
         'Inputs': {
             'HubHolesPlacement': '=Spreadsheet.HubHolesPlacement',

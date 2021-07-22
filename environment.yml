@@ -1,0 +1,12 @@
+# Conda Environment File
+#
+# Reference:
+#   https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+#
+name: openafpm-cad-core
+channels:
+  - conda-forge
+dependencies:
+  - freecad==0.19.2
+  - sphinx==4.1.1
+  - sphinx_rtd_theme==0.5.2

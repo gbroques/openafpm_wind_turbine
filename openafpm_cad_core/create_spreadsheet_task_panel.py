@@ -6,7 +6,6 @@ with spreadsheet containing input parameters.
 from enum import Enum, unique
 from typing import Any, Callable
 
-import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui
 

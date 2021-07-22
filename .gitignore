@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 *.pyo
 *.FCStd1
+docs/_build
+docs/openafpm_cad_core

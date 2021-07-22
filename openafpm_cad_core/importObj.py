@@ -2,7 +2,7 @@
 Module to export to Wavefront .obj format.
 
 See:
-  https://en.wikipedia.org/wiki/Wavefront_.obj_file
+  `Wavefront .obj file <https://en.wikipedia.org/wiki/Wavefront_.obj_file>`_
 
 Adapted from:
   https://github.com/FreeCAD/FreeCAD/blob/0.19.1/src/Mod/Arch/importOBJ.py#L149-L273
